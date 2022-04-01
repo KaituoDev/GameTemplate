@@ -1,0 +1,26 @@
+name: Build and Deploy
+
+#Change this to 'push' if you want to auto deploy this plugin
+on: ###PUSH###
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'temurin'
+      - name: Unzip dependecies, build and deploy
+        run: |
+          cp -r $GITHUB_WORKSPACE/src temp
+          cd temp
+          unzip dependencies.zip
+          javac ###YOUR_OWN_FOLDER###/*.java
+          jar -cf ###PLUGIN_NAME###.jar ###YOUR_OWN_FOLDER###/*.class
+          curl -v --proxy 47.242.204.229:8080 --proxy-user proxyuser:Iwantproxy2001! --data-binary "@###PLUGIN_NAME###.jar" "http://mc.kaituo.games:30020/upload?plugin=###PLUGIN_NAME###"
+      - name: Congrats
+        run: echo confetti

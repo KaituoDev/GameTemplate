@@ -1,26 +1,48 @@
 name: Build and Deploy
 
-#Change this to 'push' if you want to auto deploy this plugin
-on: ###PUSH###
+
+on: push
 
 jobs:
-  build_and_deploy:
+  trigger-deploy:
     runs-on: ubuntu-latest
+    env:
+      PROJECT_VERSION: na
+      ARTIFACT_ID: na
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: Setup JDK
+      - uses: s4u/maven-settings-action@v2.6.0
+        with:
+          servers: '[{"id": "Minigames-Kaituo", "username": "${{ secrets.NEXUS_USERNAME }}", "password": "${{ secrets.NEXUS_PASSWORD }}"}]'
+
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: '17'
           distribution: 'temurin'
-      - name: Unzip dependecies, build and deploy
+          cache: maven
+          overwrite-settings: false
+
+      - name: Maven clean and install
+        run: mvn clean install
+
+      - name: Update project info to environment variables
         run: |
-          cp -r $GITHUB_WORKSPACE/src temp
-          cd temp
-          unzip dependencies.zip
-          javac ###YOUR_OWN_FOLDER###/*.java
-          jar -cf ###PLUGIN_NAME###.jar ###YOUR_OWN_FOLDER###/*.class
-          curl -v --proxy 47.242.204.229:8080 --proxy-user proxyuser:Iwantproxy2001! --data-binary "@###PLUGIN_NAME###.jar" "http://mc.kaituo.games:30020/upload?plugin=###PLUGIN_NAME###"
-      - name: Congrats
-        run: echo confetti
+          echo "Project name is `mvn help:evaluate -Dexpression=project.name -q -DforceStdout`"
+          echo "PROJECT_VERSION=`mvn help:evaluate -Dexpression=project.version -q -DforceStdout`" >> $GITHUB_ENV
+          echo "ARTIFACT_ID=`mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout`" >> $GITHUB_ENV
+      - name: Ftp deloy to server
+        env:
+          FTP_SERVER: ${{secrets.FTP_SERVER}}
+          FTP_PORT: ${{secrets.FTP_PORT}}
+          FTP_USERNAME: ${{secrets.FTP_USERNAME}}
+          FTP_PASSWORD: ${{secrets.FTP_PASSWORD}}
+        shell: bash
+        run: |
+          pftp -inv "$FTP_SERVER" "$FTP_PORT" <<EOF
+          user "$FTP_USERNAME" "$FTP_PASSWORD"
+          binary
+          put target/"$ARTIFACT_ID"-"$PROJECT_VERSION".jar "$ARTIFACT_ID".jar
+          close
+          bye
+          EOF

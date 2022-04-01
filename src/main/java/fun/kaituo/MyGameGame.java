@@ -10,7 +10,7 @@ import org.bukkit.util.BoundingBox;
 
 import java.io.IOException;
 
-import static tech.yfshadaow.GameUtils.world;
+import static fun.kaituo.GameUtils.world;
 
 public class MyGameGame extends Game implements Listener {
 

@@ -1,10 +1,11 @@
-package tech.yfshadaow;
+package fun.kaituo;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 
 import java.io.IOException;
@@ -19,8 +20,16 @@ public class MyGameGame extends Game implements Listener {
     private MyGameGame(MyGame plugin) {
         this.plugin = plugin;
         players = plugin.players;
-        initGame(plugin, "MyGame", "§eMyGame", 10, new Location(world, 1000, 15, -996), BlockFace.NORTH,
-                new Location(world, 996, 15, -1000), BlockFace.EAST, new Location(world, 1000, 14, -1000), new BoundingBox(970, 31, -1030, 1030, 129, -970));
+        initializeGame(plugin, "MyGame", "§eMyGame",
+                new Location(world, 0, 89, 0), new BoundingBox(0, 0, 0, 0, 0, 0));
+        initializeButtons(new Location(world, 0,0,0), BlockFace.NORTH,
+                new Location(world, 0,0,0), BlockFace.EAST);
+        initializeGameRunnable(new BukkitRunnable() {
+            @Override
+            public void run() {
+
+            }
+        });
     }
 
 
@@ -28,12 +37,6 @@ public class MyGameGame extends Game implements Listener {
         return instance;
     }
 
-    @Override
-    protected void initGameRunnable() {
-        gameRunnable = () -> {
-
-        };
-    }
 
     @Override
     protected void savePlayerQuitData(Player p) throws IOException {
@@ -45,6 +48,4 @@ public class MyGameGame extends Game implements Listener {
     protected void rejoin(Player player) {
 
     }
-
-
 }

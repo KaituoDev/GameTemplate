@@ -1,5 +1,6 @@
-package tech.yfshadaow;
+package fun.kaituo;
 
+import fun.kaituo.event.PlayerChangeGameEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,8 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tech.yfshadaow.GameUtils.unregisterGame;
-import static tech.yfshadaow.GameUtils.world;
+import static fun.kaituo.GameUtils.unregisterGame;
+import static fun.kaituo.GameUtils.world;
 
 public class MyGame extends JavaPlugin implements Listener {
 

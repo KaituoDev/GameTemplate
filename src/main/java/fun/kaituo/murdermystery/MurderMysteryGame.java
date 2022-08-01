@@ -1,5 +1,6 @@
-package fun.kaituo;
+package fun.kaituo.murdermystery;
 
+import fun.kaituo.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -12,32 +13,32 @@ import java.io.IOException;
 
 import static fun.kaituo.GameUtils.world;
 
-public class MyGameGame extends Game implements Listener {
+public class MurderMysteryGame extends Game implements Listener {
 
-    private static final MyGameGame instance = new MyGameGame((MyGame) Bukkit.getPluginManager().getPlugin("MyGame"));
+    private static final MurderMysteryGame instance = new MurderMysteryGame((MurderMystery) Bukkit.getPluginManager().getPlugin("MyGame"));
 
 
-    private MyGameGame(MyGame plugin) {
+    private MurderMysteryGame(MurderMystery plugin) {
         this.plugin = plugin;
         players = plugin.players;
         initializeGame(plugin, "MyGame", "§eMyGame",
                 new Location(world, 0, 89, 0), new BoundingBox(0, 0, 0, 0, 0, 0));
         initializeButtons(new Location(world, 0,0,0), BlockFace.NORTH,
                 new Location(world, 0,0,0), BlockFace.EAST);
-        initializeGameRunnable(new BukkitRunnable() {
-            @Override
-            public void run() {
-
-            }
-        });
+        initializeGameRunnable();
     }
 
 
-    public static MyGameGame getInstance() {
+    public static MurderMysteryGame getInstance() {
         return instance;
     }
-
-
+    
+    
+    @Override
+    protected void initializeGameRunnable() {
+    
+    }
+    
     @Override
     protected void savePlayerQuitData(Player p) throws IOException {
 

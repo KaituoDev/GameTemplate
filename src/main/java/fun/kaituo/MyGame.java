@@ -1,6 +1,5 @@
-package fun.kaituo.murdermystery;
+package fun.kaituo;
 
-import fun.kaituo.GameUtils;
 import fun.kaituo.event.PlayerChangeGameEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,12 +15,12 @@ import java.util.List;
 import static fun.kaituo.GameUtils.unregisterGame;
 import static fun.kaituo.GameUtils.world;
 
-public class MurderMystery extends JavaPlugin implements Listener {
+public class MyGame extends JavaPlugin implements Listener {
 
     List<Player> players;
 
-    public static MurderMysteryGame getGameInstance() {
-        return MurderMysteryGame.getInstance();
+    public static MyGameGame getGameInstance() {
+        return MyGameGame.getInstance();
     }
 
 

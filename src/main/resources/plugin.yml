@@ -1,5 +1,5 @@
 api-version: 1.13
 name: MyGame
-main: fun.kaituo.
-version: 1.0
+main: fun.kaituo.gametemplate.GameTemplate
+version: 1.1
 depend: [GameUtils]
